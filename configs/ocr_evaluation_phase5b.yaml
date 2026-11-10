@@ -1,0 +1,31 @@
+# Phase 5B validation-split contrast interaction diagnostic.
+phase5b_ablation:
+  dataset: synth6k
+  split: val
+  sample_size: 200
+  seed: 7
+  batch_size: 64
+  native_contrast_factor: 2.0
+  ctc_feasible_only: true
+  stratify_by: language
+  maximum_per_source_image_id: 1
+  exclude_source_ids_from_other_splits: true
+  arms:
+    A:
+      operation: keep_original
+      native_contrast: true
+    B:
+      operation: clahe
+      native_contrast: true
+    C:
+      operation: histogram_equalization
+      native_contrast: true
+    D:
+      operation: clahe
+      native_contrast: false
+    E:
+      operation: histogram_equalization
+      native_contrast: false
+    F:
+      operation: keep_original
+      native_contrast: false

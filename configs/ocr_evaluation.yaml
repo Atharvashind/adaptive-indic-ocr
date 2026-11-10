@@ -1,0 +1,39 @@
+# Controlled Phase 5A pilot conditions; freeze these choices before OCR review.
+phase5_pilot:
+  dataset: synth6k
+  sample_size: 200
+  seed: 7
+  batch_size: 64
+  user_domain: scene_text
+  sampling:
+    split: test
+    ctc_feasible_only: true
+    stratify_by: language
+    maximum_per_source_image_id: 1
+    require_source_id_split_isolation: true
+  arms:
+    original:
+      type: original
+    fixed:
+      type: fixed_operation
+      operation: histogram_equalization
+      parameters: {}
+      rationale: >
+        Global histogram equalization is a conventional fixed contrast
+        normalization operation already implemented in the preprocessing
+        library. It is selected before pilot OCR results are observed.
+    scene_text:
+      type: fixed_operation
+      operation: clahe
+      parameters_from: configs/preprocessing.yaml
+      rationale: >
+        CLAHE applies local contrast enhancement, a predeclared scene-text
+        strategy for spatially varying illumination and contrast. Its existing
+        clip limit and tile grid are used without pilot-based tuning.
+    automatic:
+      type: adaptive_selector
+      mode: automatic
+    user_guided:
+      type: adaptive_selector
+      mode: user_guided
+      domain: scene_text

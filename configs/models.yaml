@@ -1,0 +1,19 @@
+# OCR model adapter settings.
+models:
+  crnn:
+    enabled: true
+    architecture: multilingual_crnn_v1
+    checkpoint_path: experiments/recovered_baseline/Multilingual_CRNN_OCR-20261105T161607Z-1-001.zip
+    checkpoint_member: Multilingual_CRNN_OCR/Model_Weights/best_model_epoch4.pt
+    checkpoint_sha256: 9a63c6ce29b37fdbc1b9181e5fb494d501351ebc916a1ed3189f0819c63fea10
+    vocabulary_path: experiments/recovered_baseline/Multilingual_CRNN_OCR-20261105T161607Z-1-001.zip
+    vocabulary_member: Multilingual_CRNN_OCR/Model_Weights/vocabulary.json
+    vocabulary_sha256: 5220a159757d92bccb69e447dd1f2e3ecb30d6bdcca55538c7fe429f68822d5f
+    vocabulary_source: training_split_characters
+    input_height: 32
+    contrast_factor: 2.0
+    output_classes: 280
+    blank_index: 0
+    batch_size: 64
+    device: cpu
+    decoder: greedy_ctc

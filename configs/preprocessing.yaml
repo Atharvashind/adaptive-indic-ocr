@@ -1,0 +1,69 @@
+# Independently callable defaults. These are starting points, not universal
+# settings or claims about Indic OCR performance. No operation sequence is
+# configured or run automatically.
+preprocessing:
+  clahe:
+    clip_limit: 2.0 # valid: (0, 40]
+    tile_grid_size: [8, 8] # each grid dimension: integer 1..64
+  histogram_equalization: {}
+  gaussian_filter:
+    kernel_size: 5 # valid: odd integer 1..101
+    sigma_x: 0.0 # valid: 0..100; 0 lets OpenCV derive sigma
+    sigma_y: 0.0 # valid: 0..100; 0 lets OpenCV derive sigma
+  median_filter:
+    kernel_size: 3 # valid: odd integer 1..31; reduced for small images
+  bilateral_filter:
+    diameter: 5 # valid: integer 1..31
+    sigma_color: 50.0 # valid: (0, 500]
+    sigma_space: 50.0 # valid: (0, 500]
+  otsu_threshold:
+    threshold_type: binary # binary or binary_inverse
+  adaptive_gaussian_threshold:
+    max_value: 255 # valid: integer 1..255
+    block_size: 11 # valid: odd integer 3..255; reduced for small images
+    constant: 2.0 # valid: -255..255
+  adaptive_mean_threshold:
+    max_value: 255
+    block_size: 11
+    constant: 2.0
+  unsharp_mask:
+    amount: 1.0 # valid: 0..5
+    sigma: 1.0 # valid: (0, 50]
+    threshold: 0 # valid: integer 0..255
+  deskew:
+    minimum_line_length_ratio: 0.1 # valid: (0, 1]
+    minimum_lines: 3 # valid: integer 1..1000
+    maximum_angle_degrees: 20.0 # valid: (0, 45]
+    maximum_angle_spread: 2.0 # valid: (0, 15]
+    border_value: 255 # valid: integer 0..255
+  aspect_ratio_padding:
+    multiple: 32 # valid: integer 2..512; pads canvas, never resizes source pixels
+    fill_value: 255 # valid: integer 0..255
+
+# Phase 3 rule-based selection. Thresholds are provisional indicators to
+# calibrate on representative data; they are not universal OCR cutoffs.
+adaptive_selection:
+  version: "1.0"
+  thresholds:
+    low_contrast_below: 30.0 # provisional grayscale standard deviation
+    noise_above: 10.0 # provisional median-residual indicator
+    minimum_noise_confidence: 0.2 # noise estimator confidence is intentionally low
+    blur_below: 100.0 # variance of Laplacian; does not trigger Gaussian smoothing
+    uneven_illumination_above: 18.0 # no correction operation is implemented
+    skew_min_angle_degrees: 1.0
+    skew_min_confidence: 0.7
+  enable_unsharp_for_blur: false
+  default_candidate_priority:
+    - clahe
+    - median_filter
+    - bilateral_filter
+    - deskew
+    - unsharp_mask
+  # Priorities only break ties among candidates supported by measured signals.
+  # They are provisional preferences, not claims that an operation helps a domain.
+  domain_preferences:
+    handwritten: [bilateral_filter, median_filter, clahe, deskew, unsharp_mask]
+    printed_document: [clahe, median_filter, bilateral_filter, deskew, unsharp_mask]
+    scene_text: [clahe, median_filter, bilateral_filter, deskew, unsharp_mask]
+    mixed: [median_filter, bilateral_filter, clahe, deskew, unsharp_mask]
+    unknown: [clahe, median_filter, bilateral_filter, deskew, unsharp_mask]

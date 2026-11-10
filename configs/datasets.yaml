@@ -1,0 +1,86 @@
+# Dataset sources and annotation settings.
+# synth6k is locally verified. Keep other dataset entries disabled until their
+# paths and annotation formats have been confirmed.
+datasets:
+  synth6k:
+    enabled: true
+    description: Local PMGSY-like scene-text dataset with metadata rows and split annotation references.
+    image_root: synth6k/images
+    image_extensions: [png]
+    recursive: false
+    source_domain: scene_text
+    source_content: photographed public information boards
+    image_granularity: line_crop
+    domain_labels: [scene_text]
+    annotation:
+      format: csv
+      path: synth6k/metadata.csv
+      delimiter: ","
+      encoding: utf-8-sig
+      columns:
+        image_path: filename
+        source_image_id: source_image_id
+        transcription: transcription
+        language: language
+        board_type: board_type
+        split: split
+      granularity: line_crop
+      bbox_field: bbox
+      bbox_format: xyxy
+      bbox_coordinate_space: source_image
+      reference_files:
+        - synth6k/annotations/train.txt
+        - synth6k/annotations/val.txt
+        - synth6k/annotations/test.txt
+  pmgsy:
+    enabled: false
+    description: PMGSY scene-text dataset; local path and annotation format unverified.
+    image_root: data/raw/pmgsy/images
+    image_extensions: [png, jpg, jpeg, tif, tiff, bmp, webp]
+    recursive: true
+    domain_labels: []
+    annotation:
+      format: unknown
+      path: null
+      columns: {}
+  iiit_indic_hw_words:
+    enabled: false
+    description: IIIT-INDIC-HW-WORDS; local path and annotation format unverified.
+    image_root: data/raw/iiit-indic-hw-words/images
+    image_extensions: [png, jpg, jpeg, tif, tiff, bmp, webp]
+    recursive: true
+    domain_labels: []
+    annotation:
+      format: unknown
+      path: null
+      columns: {}
+  mozhi:
+    enabled: false
+    description: Mozhi dataset; local path and annotation format unverified.
+    image_root: data/raw/mozhi/images
+    image_extensions: [png, jpg, jpeg, tif, tiff, bmp, webp]
+    recursive: true
+    domain_labels: []
+    annotation:
+      format: unknown
+      path: null
+      columns: {}
+
+# Thresholds are explainable indicator cutoffs, not OCR performance claims.
+quality:
+  blur:
+    blurred_below: 100.0
+    sharp_above: 300.0
+  contrast:
+    low_standard_deviation: 30.0
+    tile_rows: 4
+    tile_columns: 4
+  illumination:
+    uneven_above: 18.0
+    grid_size: 4
+  noise:
+    elevated_above: 10.0
+  geometry:
+    minimum_line_length_ratio: 0.1
+    minimum_lines: 5
+    maximum_angle_spread: 2.0

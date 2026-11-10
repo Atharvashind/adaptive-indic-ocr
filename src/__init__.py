@@ -1,0 +1,1 @@
+"""Adaptive Indic OCR package."""

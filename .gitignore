@@ -1,0 +1,25 @@
+.venv/
+.pytest_cache/
+__pycache__/
+**/__pycache__/
+*.py[cod]
+
+# Local dataset images, annotations, and processed data
+/synth6k/
+/data/raw/
+/data/processed/
+
+# Recovered model artifacts
+/experiments/recovered_baseline/
+*.pt
+*.pth
+*.ckpt
+*.zip
+
+# Generated experiment runs and image outputs
+/experiments/**/run-*/
+/experiments/preprocessing/synth6k/
+/experiments/profiling/
+
+# The exploratory notebook contains embedded dataset image outputs.
+/notebooks/*.ipynb

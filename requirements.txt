@@ -1,0 +1,10 @@
+numpy>=1.24
+opencv-python-headless>=4.8
+pandas>=2.0
+Pillow>=10.0
+matplotlib>=3.7
+PyYAML>=6.0
+tqdm>=4.65
+pytest>=7.4
+jiwer==4.0.0
+torch==2.15.0
